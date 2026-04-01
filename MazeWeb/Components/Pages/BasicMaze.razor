@@ -29,23 +29,12 @@ else
         startLocation = MazeUtilities.mazeFor(userName);
     }
 
-    @* ExploreMaze method, takes starting cell as argument
-    initialize list of visited NodeLinks
-    call exploreNode passing starting cell and list of visited nodes
-    return list of visited nodes
-
-    if start.North is not null
-        make new NodeLink from start going N to start.North
-        if list of visited nodes does not contain new NodeLink
-            add new NodeLink to list of visited nodes
-            call exploreNode passing start.North 
-        
-        do the same thing for East, West and South
-        *@
     List<NodeLink> visited = new List<NodeLink>();
 
-    private NodeLink? exploreMaze(NodeLink startingCell, List<NodeLink> visitedNodes)
+    private List<NodeLink> exploreMaze(NodeLink startingCell)
     {
+        List<NodeLink> visitedNodes = new List<NodeLink>();
+        exploreNode(startingCell, ref visitedNodes);
         return null;
         //not implemented yet
     }
@@ -63,6 +52,7 @@ else
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
+                exploreNode(newLink, ref visitedNodes);
             }
         }
 
@@ -72,6 +62,7 @@ else
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
+                exploreNode(newLink, ref visitedNodes);
             }
         }
 
@@ -81,6 +72,8 @@ else
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
+                exploreNode(newLink, ref visitedNodes);
+
             }
         }
 
@@ -90,11 +83,10 @@ else
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
+                exploreNode(newLink, ref visitedNodes);
             }
         }
 
         return;
     }
-}
-
 }
