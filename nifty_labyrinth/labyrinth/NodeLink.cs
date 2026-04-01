@@ -1,6 +1,8 @@
 namespace labyrinth;
 
-public record NodeLink(MazeCell From, char Direction, MazeCell To)
+public record NodeLink(MazeCell From, string Direction, MazeCell To)
 {
+    public string Label => $"{From.Id}[\"{From}\"]--{Direction}-->{To.Id}[\"{To}\"]";
+
 
 }
