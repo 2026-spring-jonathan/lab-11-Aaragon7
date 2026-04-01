@@ -1,0 +1,17 @@
+@page "/basicMaze"
+<PageTitle>Basic Maze</PageTitle>
+
+<h1>Basic Maze Visualizer</h1>
+
+<h1>Enter your name:</h1>
+<input @bind="userName" />
+<button @onclick="generateMaze">Generate Basic Maze</button>
+
+@code {
+
+    private string userName = "";
+    private void generateMaze()
+    {
+        // Maze generation logic would go here
+    }
+}
