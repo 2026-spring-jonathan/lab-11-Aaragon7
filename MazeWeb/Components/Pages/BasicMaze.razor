@@ -16,6 +16,14 @@ else
 {
     <h2>Start Location:</h2>
     <p>@startLocation</p>
+
+    <h2>Instructions:</h2>
+    <ol>
+        @foreach (string instruction in instructions())
+        {
+            <li>@instruction</li>
+        }  
+    </ol>
 }
 
 @code {
