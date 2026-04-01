@@ -22,71 +22,79 @@ else
 
     private string userName = "";
     private MazeCell? startLocation;
-    private void generateMaze()
-    {
-        // Maze generation logic would go here
-        
-        startLocation = MazeUtilities.mazeFor(userName);
-    }
-
     List<NodeLink> visited = new List<NodeLink>();
 
-    private List<NodeLink> exploreMaze(NodeLink startingCell)
+    private void generateMaze() => startLocation = MazeUtilities.mazeFor(userName);
+
+    private IEnumerable<string> instructions()
+    {
+        if(startLocation == null) yield break;
+
+        List<NodeLink> visitedNodes = exploreMaze(startLocation);
+        foreach (NodeLink link in visitedNodes)
+        {
+            yield return link.Label;
+        }
+    }
+
+    private List<NodeLink> exploreMaze(MazeCell startingCell)
     {
         List<NodeLink> visitedNodes = new List<NodeLink>();
         exploreNode(startingCell, ref visitedNodes);
-        return null;
-        //not implemented yet
+
+        return visitedNodes;
     }
 
-    private void exploreNode(NodeLink startingCell, ref List<NodeLink> visitedNodes)
+    private void exploreNode(MazeCell startingCell, ref List<NodeLink> visitedNodes)
     {
         if (startingCell == null) return;
 
         // Check each direction for a NodeLink that isn't null and hasn't been visited yet
         NodeLink newLink;
 
-        if (startingCell.To.North != null)
+        if (startingCell.North != null)
         {
-            newLink = new NodeLink(startingCell.To, "North", startingCell.To.North);
+            newLink = new NodeLink(startingCell, "North", startingCell.North);
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
-                exploreNode(newLink, ref visitedNodes);
+                exploreNode(startingCell.North, ref visitedNodes);
             }
         }
 
-        if (startingCell.To.East != null)
+        if (startingCell.East != null)
         {
-            newLink = new NodeLink(startingCell.To, "East", startingCell.To.East);
+            newLink = new NodeLink(startingCell, "East", startingCell.East);
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
-                exploreNode(newLink, ref visitedNodes);
+                exploreNode(startingCell.East, ref visitedNodes);
             }
         }
 
-        if (startingCell.To.South != null)
+        if (startingCell.South != null)
         {
-            newLink = new NodeLink(startingCell.To, "South", startingCell.To.South);
+            newLink = new NodeLink(startingCell, "South", startingCell.South);
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
-                exploreNode(newLink, ref visitedNodes);
+                exploreNode(startingCell.South, ref visitedNodes);
 
             }
         }
 
-        if (startingCell.To.West != null)
+        if (startingCell.West != null)
         {
-            newLink = new NodeLink(startingCell.To, "West", startingCell.To.West);
+            newLink = new NodeLink(startingCell, "West", startingCell.West);
             if (visitedNodes.Contains(newLink) is false)
             {
                 visitedNodes.Add(newLink);
-                exploreNode(newLink, ref visitedNodes);
+                exploreNode(startingCell.West, ref visitedNodes);
             }
         }
 
         return;
     }
+
+
 }
