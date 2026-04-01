@@ -1,5 +1,6 @@
 @page "/basicMaze"
 @using System.Runtime.CompilerServices
+@using MermaidJS.Blazor
 @using labyrinth
 <PageTitle>Basic Maze</PageTitle>
 
@@ -8,23 +9,14 @@
 <h1>Enter your name:</h1>
 <input @bind="userName" />
 
-@if (startLocation == null)
-{
-    <button @onclick="generateMaze">Generate Basic Maze</button>
-}
-else
-{
-    <h2>Start Location:</h2>
-    <p>@startLocation</p>
+<button @onclick="generateMaze">Generate Basic Maze</button>
+<MermaidDiagram Definition="@mazeBody" />
 
-    <h2>Instructions:</h2>
-    <ol>
-        @foreach (string instruction in instructions())
-        {
-            <li>@instruction</li>
-        }  
-    </ol>
-}
+<h2>Start Location:</h2>
+<p>@startLocation</p>
+
+<h2>Instructions:</h2>
+@mazeBody
 
 @code {
 
@@ -32,17 +24,24 @@ else
     private MazeCell? startLocation;
     List<NodeLink> visited = new List<NodeLink>();
 
-    private void generateMaze() => startLocation = MazeUtilities.mazeFor(userName);
+    string mazeBody => generateMazeBody();
 
-    private IEnumerable<string> instructions()
+        
+    private void generateMaze()
     {
-        if(startLocation == null) yield break;
+        startLocation = MazeUtilities.mazeFor(userName);
+        generateMazeBody();
+    }
 
+    private string generateMazeBody()
+    {
+        if (startLocation == null) return "No maze generated yet. Please click the button above to generate a maze.";
+
+        
+        string mazeBody = "graph TD\n";
         List<NodeLink> visitedNodes = exploreMaze(startLocation);
-        foreach (NodeLink link in visitedNodes)
-        {
-            yield return link.Label;
-        }
+     
+        return mazeBody += string.Join("\n", visitedNodes.Select(l => l.Label));
     }
 
     private List<NodeLink> exploreMaze(MazeCell startingCell)
