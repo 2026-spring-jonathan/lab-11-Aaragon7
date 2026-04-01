@@ -10,15 +10,30 @@
 <input @bind="userName" />
 
 <button @onclick="generateMaze">Generate Basic Maze</button>
-<MermaidDiagram Definition="@mazeBody" />
 
 <h2>Start Location:</h2>
 <p>@startLocation</p>
 
-<h2>Instructions:</h2>
-@mazeBody
+<MermaidDiagram Definition="@mazeBody" />
 
+@if (startLocation != null)
+{
+    <h2>Guess a path through the Maze:</h2>
+    <input type="text" @bind="userGuess" />
+    <button @onclick="ChangePathMessage">Check Guess</button>
+
+    <p>@GuessedPathMessage</p>
+}
 @code {
+    private string userGuess = "";
+    string GuessedPathMessage = "No guess yet. Please enter a path and click the button above to check your guess.";
+    
+    private void ChangePathMessage()
+    {
+        GuessedPathMessage = MazeUtilities.isPathToFreedom(startLocation, userGuess)
+     ? "Correct!"
+     : "Incorrect. Try again.";
+    }
 
     private string userName = "";
     private MazeCell? startLocation;
