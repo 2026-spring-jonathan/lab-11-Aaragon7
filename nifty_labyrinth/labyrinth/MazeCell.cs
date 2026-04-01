@@ -1,5 +1,4 @@
 namespace labyrinth;
-
 public enum Item
 {
     Nothing,

@@ -1,17 +1,58 @@
 @page "/basicMaze"
+@using System.Runtime.CompilerServices
+@using labyrinth
 <PageTitle>Basic Maze</PageTitle>
 
 <h1>Basic Maze Visualizer</h1>
 
 <h1>Enter your name:</h1>
 <input @bind="userName" />
-<button @onclick="generateMaze">Generate Basic Maze</button>
+
+@if (startLocation == null)
+{
+    <button @onclick="generateMaze">Generate Basic Maze</button>
+}
+else
+{
+    <h2>Start Location:</h2>
+    <p>@startLocation</p>
+}
 
 @code {
 
     private string userName = "";
+    private MazeCell? startLocation;
     private void generateMaze()
     {
         // Maze generation logic would go here
+        
+        startLocation = MazeUtilities.mazeFor(userName);
+    }
+
+    /* Set a breakpoint here to explore your maze! */
+    private void testingMaze()
+    {
+        if (MazeUtilities.isPathToFreedom(startLocation, "EW"))
+        {
+            Console.WriteLine("Congratulations! You've found a way out of your labyrinth.");
+        }
+        else
+        {
+            Console.WriteLine("Sorry, but you're still stuck in your labyrinth.");
+        }
+
+
+        MazeCell twistyStartLocation = MazeUtilities.twistyMazeFor(userName);
+
+        /* Set a breakpoint here to explore your twisty maze! */
+
+        if (MazeUtilities.isPathToFreedom(twistyStartLocation, PATH_OUT_OF_TWISTY_MAZE))
+        {
+            Console.WriteLine("Congratulations! You've found a way out of your twisty labyrinth.");
+        }
+        else
+        {
+            Console.WriteLine("Sorry, but you're still stuck in your twisty labyrinth.");
+        }
     }
 }
